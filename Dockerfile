@@ -11,6 +11,7 @@ ENV VERSION 1.0
 
 ADD https://github.com/CasualPyDev/pgn2scid/archive/v${VERSION}.tar.gz /home/scid
 
+RUN ls -l
 RUN if [ ! -d pgn2scid-${VERSION} ]; then tar xvzf *.tgz; fi \
   && cd pgn2scid-${VERSION} \
   && apt-get update \
