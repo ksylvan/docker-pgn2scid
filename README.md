@@ -11,16 +11,23 @@ in your `~/.bahsrc`:
 ```
 pgn2scid()
 {
-  docker run -it -u 1000:1000 --rm -e HOME=/home/scid \
+  docker run -d -u $(id -u):$(id -g) --rm -e HOME \
     -e DISPLAY=unix:0 -e XAUTHORITY=/tmp/xauth \
-    -v $XAUTHORITY:/tmp/xauth -v $HOME:/home/scid \
+    -v $XAUTHORITY:/tmp/xauth -v $HOME:$HOME \
     -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro \
-    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v /tmp/.X11-unix:/tmp/.X11-unix -w $HOME \
     ${1+"$@"} kayvan/pgn2scid
 }
 ```
 
 Run it by `pgn2scid`.
+
+If you want to have access to the `pgn_files` directory (see the `pgn2scid`
+PDF manual), create, for example, `~/.pgn_files` and then run:
+
+```
+pgn2scid -v ~/.pgn_files:/usr/local/bin/pgn_files
+```
 
 ## MacOS: Using this image
 
@@ -44,10 +51,10 @@ pgn2scid() {
   else
     socat TCP-LISTEN:6001,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
     SOCAT_PGN_SCID_PID=$!
-    docker run --rm \
-      -e HOME=/home/scid \
+    docker run --rm -e HOME \
       -e XAUTHORITY=/tmp/xauth -v ~/.Xauthority:/tmp/xauth \
-      -e DISPLAY=$__my_ip:1 --net host -v $HOME:/home/scid \
+      -e DISPLAY=$__my_ip:1 --net host -v $HOME:$HOME \
+      -w $HOME \
       ${1+"$@"} kayvan/pgn2scid
     kill $SOCAT_PGN_SCID_PID
   fi
@@ -59,3 +66,4 @@ Now, `pgn2scid` should launch the application.
 # Reference
 
 - https://github.com/CasualPyDev/pgn2scid
+- https://github.com/CasualPyDev/pgn2scid/blob/master/pgn2scid_1_0_manual.pdf
