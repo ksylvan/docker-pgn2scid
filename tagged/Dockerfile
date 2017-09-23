@@ -7,7 +7,7 @@ FROM kayvan/scidvspc:latest
 
 LABEL maintainer "Kayvan Sylvan <kayvansylvan@gmail.com>"
 
-ENV VERSION v1.0
+ENV VERSION master
 
 ADD https://github.com/CasualPyDev/pgn2scid/archive/${VERSION}.tar.gz /home/scid
 
