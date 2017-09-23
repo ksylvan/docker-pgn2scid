@@ -2,6 +2,9 @@
 
 pgn2scid in a container
 
+Docker tags correspond to tagged versions of the pg2scid code.
+The default `latest` tag will always contain the latest (master) branch.
+
 To run this image, share the X11 socket or use any
 of the other methods to run X11 Apps in Docker.
 
